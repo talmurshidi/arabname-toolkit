@@ -1,0 +1,5 @@
+dist/
+node_modules/
+coverage/
+PROJECT_TREE.md
+src/core/transliteration/legacyEngine.mjs

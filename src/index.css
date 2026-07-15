@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', serif;
+  --font-serif: 'Noto Serif', serif;
+
+  --color-parchment: #faf9f5;
+  --color-parchment-dim: #f4f4f0;
+  --color-scholargreen: #496640;
+  --color-scholargreen-dark: #34492e;
+  --color-scholargold: #8a6d1e;
+  --color-ink: #1b1c1a;
+  --color-surface-container: #efeeea;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
+}
+
+/* Arabic script always renders in the Naskh serif, regardless of UI locale. */
+.arabic-text {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  unicode-bidi: isolate;
+  line-height: 1.9;
+}
+
+.hard-shadow {
+  box-shadow: 4px 4px 0 0 rgb(27 28 26 / 8%);
+}
+
+.brill-input:focus {
+  outline: none;
+  border-color: var(--color-scholargreen);
+  box-shadow: 0 0 0 2px rgb(73 102 64 / 15%);
+}
+
+.virtual-key:active {
+  background-color: var(--color-surface-container);
+  transform: scale(0.92);
+}

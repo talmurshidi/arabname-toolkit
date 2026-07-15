@@ -1,0 +1,130 @@
+/** Full bilingual string contract. Every key must exist in both ar.ts and en.ts. */
+export interface UIStrings {
+  app: {
+    name: string;
+    tagline: string;
+    footerDesc: string;
+    footerMethodology: string;
+    footerPrivacy: string;
+    privacyNotice: string;
+    sourceCode: string;
+  };
+  nav: {
+    converter: string;
+    batch: string;
+    dictionary: string;
+    methodology: string;
+    toggleLang: string;
+  };
+  converter: {
+    title: string;
+    subtitle: string;
+    inputLabel: string;
+    inputPlaceholder: string;
+    dinInputPlaceholder: string;
+    convertBtn: string;
+    clearBtn: string;
+    copyBtn: string;
+    copiedFeedback: string;
+    withHarakatLabel: string;
+    withoutHarakatLabel: string;
+    normalizedLabel: string;
+    nameOrderLabel: string;
+    schemeLabel: string;
+    schemeBrillOption: string;
+    schemeDinOption: string;
+    noInputError: string;
+    limitNote: string;
+    swapDirectionBtn: string;
+    directionLatinLabel: string;
+    directionArabicLabel: string;
+    arabicInputLabel: string;
+    arabicInputPlaceholder: string;
+    outputBrillLabel: string;
+    outputDinLabel: string;
+    notDiacritizedWarning: string;
+    schemeMismatchWarning: string;
+    switchToDinBtn: string;
+    switchToBrillBtn: string;
+    keyboardToggleBtn: string;
+    keyboardLatinTab: string;
+    keyboardDinTab: string;
+    keyboardArabicTab: string;
+    advancedOptionsBtn: string;
+    bracketFixEnabledLabel: string;
+    bracketFixEnabledHint: string;
+    wellFormedBracketsLabel: string;
+    wellFormedPreserve: string;
+    wellFormedStrip: string;
+    wellFormedRemove: string;
+  };
+  comparison: {
+    title: string;
+    addSchemeBtn: string;
+  };
+  history: {
+    title: string;
+    clearAll: string;
+    empty: string;
+    removeEntry: string;
+  };
+  batch: {
+    title: string;
+    subtitle: string;
+    uploadLabel: string;
+    columnLabel: string;
+    columnPlaceholder: string;
+    processBtn: string;
+    downloadCsvBtn: string;
+    downloadJsonBtn: string;
+    progressLabel: string;
+    summarySuccess: string;
+    summaryError: string;
+    summarySkipped: string;
+    noFileError: string;
+  };
+  dictionary: {
+    title: string;
+    subtitle: string;
+    searchPlaceholder: string;
+    addBtn: string;
+    editBtn: string;
+    deleteBtn: string;
+    exportBtn: string;
+    importBtn: string;
+    latinLabel: string;
+    arabicHarakatLabel: string;
+    notesLabel: string;
+    saveBtn: string;
+    cancelBtn: string;
+    emptyState: string;
+    duplicateError: string;
+    confirmDelete: string;
+    importSuccess: string;
+  };
+  methodology: {
+    title: string;
+    subtitle: string;
+    navBrillStandards: string;
+    navDin31635: string;
+    navCharacterTable: string;
+    navEngineLayers: string;
+    navOrthography: string;
+    navLimitations: string;
+    navReferences: string;
+    tableArabic: string;
+    tableLatin: string;
+    tableDin: string;
+    tableNotes: string;
+    recommendedBadge: string;
+    printBtn: string;
+  };
+  common: {
+    loading: string;
+    error: string;
+    close: string;
+    yes: string;
+    no: string;
+    ruleVersion: string;
+  };
+}

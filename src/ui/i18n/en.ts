@@ -1,0 +1,135 @@
+import type { UIStrings } from './types.js';
+
+export const en: UIStrings = {
+  app: {
+    name: 'ArabName',
+    tagline: 'Arabic Names Toolkit',
+    footerDesc:
+      'A free, open-source tool that runs entirely in your browser — no server, no database.',
+    footerMethodology: 'Methodology',
+    footerPrivacy: 'Privacy',
+    privacyNotice: 'All data stays in your browser (localStorage) and is never sent to a server.',
+    sourceCode: 'Source code'
+  },
+  nav: {
+    converter: 'Converter',
+    batch: 'Batch',
+    dictionary: 'Dictionary',
+    methodology: 'Methodology',
+    toggleLang: 'العربية'
+  },
+  converter: {
+    title: 'Arabic Names Converter',
+    subtitle: 'Convert Brill-transliterated names to Arabic script with and without diacritics',
+    inputLabel: 'Latin input',
+    inputPlaceholder: 'e.g. Abū Bakr al-Ṣiddīq',
+    dinInputPlaceholder: 'e.g. Ǧamāl al-Dīn',
+    convertBtn: 'Convert',
+    clearBtn: 'Clear',
+    copyBtn: 'Copy',
+    copiedFeedback: 'Copied ✓',
+    withHarakatLabel: 'With diacritics',
+    withoutHarakatLabel: 'Without diacritics',
+    normalizedLabel: 'Normalised name',
+    nameOrderLabel: 'Index sort key',
+    schemeLabel: 'Latin transliteration scheme',
+    schemeBrillOption: 'Latin (Brill)',
+    schemeDinOption: 'DIN 31635',
+    noInputError: 'Please enter text to convert.',
+    limitNote: 'The converter accepts diacritised Brill or DIN 31635 input.',
+    swapDirectionBtn: 'Swap direction ⇄',
+    directionLatinLabel: 'Latin',
+    directionArabicLabel: 'Arabic',
+    arabicInputLabel: 'Arabic input (fully diacritised)',
+    arabicInputPlaceholder: 'e.g. أَبُو بَكْر الصِّدِّيق',
+    outputBrillLabel: 'Latin form (Brill)',
+    outputDinLabel: 'Latin form (DIN 31635)',
+    notDiacritizedWarning:
+      'Arabic → Latin conversion requires fully diacritised Arabic text (every letter voweled). The input is not fully diacritised, so the result would be unreliable — conversion was skipped.',
+    schemeMismatchWarning:
+      'This input looks like it contains DIN 31635 letters (e.g. š, ǧ, or ġ), but "Latin (Brill)" is selected. Brill doesn\u2019t recognise these as single characters, so the result may be incorrect.',
+    switchToDinBtn: 'Switch to DIN 31635',
+    switchToBrillBtn: 'Switch to Brill',
+    keyboardToggleBtn: 'Keyboard',
+    keyboardLatinTab: 'Latin (Brill)',
+    keyboardDinTab: 'DIN 31635',
+    keyboardArabicTab: 'Arabic',
+    advancedOptionsBtn: 'Advanced options',
+    bracketFixEnabledLabel: 'Repair unmatched brackets',
+    bracketFixEnabledHint:
+      'Automatically strips stray (unpaired) brackets. Well-formed, balanced brackets are always left untouched — they are often genuine scholarly editorial notation.',
+    wellFormedBracketsLabel: 'Well-formed bracket handling',
+    wellFormedPreserve: 'Preserve as-is (recommended)',
+    wellFormedStrip: 'Strip brackets, keep content',
+    wellFormedRemove: 'Remove brackets and content'
+  },
+  comparison: {
+    title: 'Scheme comparison',
+    addSchemeBtn: 'Add scheme'
+  },
+  history: {
+    title: 'History',
+    clearAll: 'Clear history',
+    empty: 'No conversions yet.',
+    removeEntry: 'Remove'
+  },
+  batch: {
+    title: 'Batch processing',
+    subtitle: 'Upload a CSV/TSV file to convert hundreds of names at once',
+    uploadLabel: 'Upload file (CSV or TSV)',
+    columnLabel: 'Name column',
+    columnPlaceholder: 'Column name or 0-based index (default: first)',
+    processBtn: 'Start processing',
+    downloadCsvBtn: 'Download results (CSV)',
+    downloadJsonBtn: 'Download results (JSON)',
+    progressLabel: 'Processing…',
+    summarySuccess: 'Success',
+    summaryError: 'Errors',
+    summarySkipped: 'Skipped',
+    noFileError: 'Please select a file first.'
+  },
+  dictionary: {
+    title: 'User dictionary',
+    subtitle: 'Add your own translations — they are merged with the built-in dictionary',
+    searchPlaceholder: 'Search…',
+    addBtn: 'Add entry',
+    editBtn: 'Edit',
+    deleteBtn: 'Delete',
+    exportBtn: 'Export JSON',
+    importBtn: 'Import JSON',
+    latinLabel: 'Latin form',
+    arabicHarakatLabel: 'Arabic with diacritics',
+    notesLabel: 'Notes (optional)',
+    saveBtn: 'Save',
+    cancelBtn: 'Cancel',
+    emptyState: 'No entries yet. Add your first translation above.',
+    duplicateError: 'This Latin form already exists.',
+    confirmDelete: 'Delete this entry?',
+    importSuccess: '{count} entries imported successfully.'
+  },
+  methodology: {
+    title: 'Methodology',
+    subtitle: 'Documentation of transliteration standards, sources, and known limitations',
+    navBrillStandards: 'Brill standard',
+    navDin31635: 'DIN 31635',
+    navCharacterTable: 'Character table',
+    navEngineLayers: 'Engine layers',
+    navOrthography: 'Orthographic notes',
+    navLimitations: 'Known limitations',
+    navReferences: 'References',
+    tableArabic: 'Arabic',
+    tableLatin: 'Brill Latin',
+    tableDin: 'DIN 31635',
+    tableNotes: 'Notes',
+    recommendedBadge: 'Recommended',
+    printBtn: 'Print version'
+  },
+  common: {
+    loading: 'Loading…',
+    error: 'Error',
+    close: 'Close',
+    yes: 'Yes',
+    no: 'No',
+    ruleVersion: 'Rule version'
+  }
+};

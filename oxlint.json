@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/crates/oxc_linter/schemas/oxlint.schema.json",
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "warn",
+    "eqeqeq": "error",
+    "prefer-const": "error"
+  },
+  "ignore": {
+    "patterns": ["dist/**", "node_modules/**", "src/core/transliteration/legacyEngine.mjs"]
+  }
+}
