@@ -14,7 +14,7 @@ volunteers — please keep pull requests focused and scoped.
 ## Setup
 
 ```bash
-git clone https://github.com/your-username/arabname-toolkit.git
+git clone https://github.com/talmurshidi/arabname-toolkit.git
 cd arabname-toolkit
 npm ci
 npm run dev

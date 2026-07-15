@@ -47,7 +47,7 @@ survive a future UI-framework change (as they already have once — see
 Requirements: Node.js ≥ 22, npm ≥ 10.
 
 ```bash
-git clone https://github.com/your-username/arabname-toolkit.git
+git clone https://github.com/talmurshidi/arabname-toolkit.git
 cd arabname-toolkit
 npm ci
 npm run dev
