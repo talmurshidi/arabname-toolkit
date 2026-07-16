@@ -19,15 +19,19 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   // Tāʾ marbūṭa noun ("prayer"); written with ة regardless of the "-āt"
   // Latin ending, matching standard Arabic spelling for this common word.
   'al-Ṣalāt': 'الصَّلَاة',
-  ʿAbdallāh: 'عَبْدُ اللَّهِ',
-  HibatallĀh: 'هِبَةُ اللَّهِ',
-  'ʿAbd al-Raḥmān': 'عَبْدُ الرَّحْمَان',
+  // Allāh/al-Raḥmān/al-Raḥīm below use the traditional Qur'anic/Classical
+  // orthography (alif wasla ٱ + dagger alif ٰ) rather than the plain-alif
+  // spelling — see the "Divine names" block near the end of this file for
+  // the full set of standalone forms and the sourcing note.
+  ʿAbdallāh: 'عَبْدُ ٱللَّٰهِ',
+  HibatallĀh: 'هِبَةُ ٱللَّٰهِ',
+  'ʿAbd al-Raḥmān': 'عَبْدُ ٱلرَّحْمَٰن',
   'ʿAbd al-ʿAzīz': 'عَبْدُ الْعَزِيْز',
   'ʿAbd al-Malik': 'عَبْدُ الْمَلِك',
   'ʿAbd al-Wahhāb': 'عَبْدُ الْوَهَّاب',
   'ʿAbd al-Muṭṭalib': 'عَبْدُ الْمُطَّلِب',
   'ʿAbd al-Jabbār': 'عَبْدُ الْجَبَّار',
-  'ʿAbd al-Raḥīm': 'عَبْدُ الرَّحِيْم',
+  'ʿAbd al-Raḥīm': 'عَبْدُ ٱلرَّحِيْم',
   'ʿAbd al-Salām': 'عَبْدُ السَّلَام',
   'ʿAbd al-Qādir': 'عَبْدُ الْقَادِر',
   'ʿAbd al-Qāhir': 'عَبْدُ الْقَاهِر',
@@ -164,7 +168,7 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   Tufayl: 'طُفَيْل',
   // "ʿAbdullāh" (u) is a spelling variant of the existing "ʿAbdallāh" (a)
   // compound entry above, seen in real bibliographic sources.
-  ʿAbdullāh: 'عَبْدُ اللَّهِ',
+  ʿAbdullāh: 'عَبْدُ ٱللَّٰهِ',
   // "Fath" bare-ASCII: without this alias, the fallback engine misreads the
   // "th" substring as a single ث digraph, dropping the ت entirely (verified
   // via generateArabicHarakat('Fath') producing "فَث" instead of "فَتْح").
@@ -775,7 +779,7 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   'Abū Mūsā': 'أَبُو مُوسَى',
   Nubāta: 'نُبَاتَة',
   Nahīk: 'نَهِيْك',
-  'Abū ʿAbd al-Raḥmān': 'أَبُو عَبْدِ الرَّحْمَان',
+  'Abū ʿAbd al-Raḥmān': 'أَبُو عَبْدِ ٱلرَّحْمَٰن',
   Aḥwaṣ: 'أَحْوَص',
   Jawwāb: 'جَوَّاب',
   Jabr: 'جَبْر',
@@ -1200,7 +1204,7 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   'Abū ʿUtba': 'أَبُو عُتْبَة',
   Sandīla: 'سَنْدِيْلَة',
   Ṭūs: 'طُوس',
-  'ʿAṭāʾ Allāh': 'عَطَاء اللَّه',
+  'ʿAṭāʾ Allāh': 'عَطَاء ٱللَّٰه',
   'Abū Thawāba': 'أَبُو ثَوَابَة',
   'Abū Sawwār': 'أَبُو سَوَّار',
   'Abū al-Shamkh': 'أَبُو الشَّمْخ',
@@ -1874,7 +1878,48 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   'al-Zubaydī': 'الزُّبَيْدِي',
   'al-Zubayrī': 'الزُّبَيْرِي',
   'al-Zuhrī': 'الزُّهْرِي',
-  'al-Zuraqī': 'الزُّرَقِي'
+  'al-Zuraqī': 'الزُّرَقِي',
+
+  // --- Divine names: "Allāh", "al-Raḥmān", "al-Raḥīm" ---
+  // Standard Arabic orthography for these three specific words uses the
+  // traditional Qur'anic/Classical spelling — alif wasla (ٱ, U+0671) for the
+  // elidable hamzat al-waṣl, and (for Allāh/al-Raḥmān only, which omit a
+  // written root alif) a dagger alif (ٰ, U+0670) in place of a full ا. This
+  // is not exclusive to Qur'anic quotation; it's the standard spelling of
+  // these two words in Arabic generally (see docs/METHODOLOGY.md). Each
+  // value below was extracted programmatically from a verified Uthmani
+  // Mushaf rendering of the Basmala (Q1:1) rather than hand-typed, per this
+  // file's rule about combining-mark transcription risk (see
+  // tests/core/divineNames.test.ts) — al-Raḥīm's case-ending forms then have
+  // a sukūn inserted on its medial ي to match this dictionary's own
+  // yā-sukūn house style (see arabicHouseStyle.ts), since dictionary values
+  // bypass that post-processing pass and must already be correct as written.
+  // Covers both the bare Latin spelling ("Allāh") and the hyphenated form
+  // Brill sources use when this word is preceded by another word in a
+  // phrase and the hamza is elided ("al-lāh...", e.g. "Bismi al-lāhi").
+  Allāh: 'ٱللَّٰه',
+  Allāhu: 'ٱللَّٰهُ',
+  Allāhi: 'ٱللَّٰهِ',
+  Allāha: 'ٱللَّٰهَ',
+  'al-lāh': 'ٱللَّٰه',
+  'al-lāhu': 'ٱللَّٰهُ',
+  'al-lāhi': 'ٱللَّٰهِ',
+  'al-lāha': 'ٱللَّٰهَ',
+  'al-Raḥmān': 'ٱلرَّحْمَٰن',
+  'al-Raḥmānu': 'ٱلرَّحْمَٰنُ',
+  'al-Raḥmāni': 'ٱلرَّحْمَٰنِ',
+  'al-Raḥmāna': 'ٱلرَّحْمَٰنَ',
+  'al-Raḥīm': 'ٱلرَّحِيْم',
+  'al-Raḥīmu': 'ٱلرَّحِيْمُ',
+  'al-Raḥīmi': 'ٱلرَّحِيْمِ',
+  'al-Raḥīma': 'ٱلرَّحِيْمَ',
+  // The Basmala itself (Q1:1), both common Latin spellings of "Allāh" within
+  // it (hyphenated "al-lāhi" and bare "Allāhi") — added as exact-phrase
+  // entries, verbatim from the Uthmani Mushaf, so the well-known formula
+  // reproduces its authentic scriptural spelling (no yā-sukūn house style
+  // applied) rather than composing from the individual-word entries above.
+  'Bismi al-lāhi al-raḥmāni al-raḥīmi': 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+  'Bismi Allāhi al-raḥmāni al-raḥīmi': 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ'
 };
 
 export interface DictionaryCandidate {

@@ -74,6 +74,7 @@ tests/
 │   ├── commonNameAliases.test.ts
 │   ├── curlyQuoteNormalization.test.ts
 │   ├── din31635.test.ts
+│   ├── divineNames.test.ts
 │   ├── muslimHeritageFixtures.test.ts
 │   ├── orthographyNormalization.test.ts
 │   ├── transliteration.test.ts
@@ -443,6 +444,10 @@ Full bilingual string contract.
 (no exports)
 
 ### `tests/core/din31635.test.ts`
+
+(no exports)
+
+### `tests/core/divineNames.test.ts`
 
 (no exports)
 

@@ -6,6 +6,20 @@ semantic versioning strictly (pre-1.0).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-16
+
+### Fixed
+
+- **"Allāh"/"al-Raḥmān"/"al-Raḥīm" now use standard Qur'anic/Classical orthography** (alif
+  wasla ٱ, and dagger alif ٰ for the first two) instead of a plain-alif spelling, and the
+  case-inflected, hyphenated form Brill sources use when the word is preceded by another
+  word (e.g. "Bismi al-lāhi") is now recognized — previously it fell through to the
+  character-level engine and produced an incorrect extra-alif spelling (اللَّاهِ). The Basmala
+  ("Bismi al-lāhi al-raḥmāni al-raḥīmi") now reproduces the exact Uthmani Mushaf text. The
+  existing "ʿAbdallāh", "ʿAbdullāh", "HibatallĀh", "ʿAbd al-Raḥmān", "ʿAbd al-Raḥīm", "Abū
+  ʿAbd al-Raḥmān", and "ʿAṭāʾ Allāh" dictionary entries were updated to the same spelling for
+  consistency.
+
 ## [0.2.0] - 2026-07-16
 
 ### Added

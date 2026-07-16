@@ -1,6 +1,6 @@
 {
   "name": "arabname-toolkit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Client-side Arabic names transliteration toolkit for academic researchers",
   "type": "module",
