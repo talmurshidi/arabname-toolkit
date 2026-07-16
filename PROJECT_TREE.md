@@ -85,7 +85,8 @@ tests/
     └── transliterationService.test.ts
 scripts/
 ├── find-degraded-transliterations.ts
-└── generate-project-tree.ts
+├── generate-project-tree.ts
+└── release.ts
 docs/
 ├── adr/
 │   ├── 0001-react-spa.md
@@ -486,3 +487,7 @@ Full bilingual string contract.
 - `function generate(rootDir: string): string`
 - `function generateFormatted(rootDir: string): Promise<string>`
 - `function isCurrent(rootDir: string, outputPath: string): Promise<boolean>`
+
+### `scripts/release.ts`
+
+(no exports)

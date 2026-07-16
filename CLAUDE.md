@@ -62,6 +62,9 @@ npm run test:coverage    # vitest with v8 coverage
 npm run docs:tree        # regenerate PROJECT_TREE.md
 npm run docs:tree:check  # verify PROJECT_TREE.md is up to date
 npm run verify           # format:check + lint + typecheck + test + docs:tree:check + build
+npm run release:patch    # bump PATCH version, promote CHANGELOG [Unreleased] → new version heading
+npm run release:minor    # same, for a MINOR bump
+npm run release:major    # same, for a MAJOR bump (see Versioning & Releases — rarely used pre-1.0)
 ```
 
 Always run `npm run verify` before considering a change complete.
@@ -71,9 +74,45 @@ Always run `npm run verify` before considering a change complete.
 errors, which is what you're actually changing.
 
 - Don't spend a tool call running `format`/`format:check/run docs:tree/run docs:tree:check` yourself
-unless the developer asks for the full gate. Reserve the complete `npm run verify` (format:check + lint + typecheck + test + docs:tree:check + build) for: finishing a multi-file/multi-task change, before handing
-work back as "done", or when explicitly asked to verify. Don't re-run the full gate after
-every small edit within the same task — accumulate changes and verify once at the end.
+  unless the developer asks for the full gate. Reserve the complete `npm run verify` (format:check + lint + typecheck + test + docs:tree:check + build) for: finishing a multi-file/multi-task change, before handing
+  work back as "done", or when explicitly asked to verify. Don't re-run the full gate after
+  every small edit within the same task — accumulate changes and verify once at the end.
+
+## Versioning & Releases
+
+The project follows [Semantic Versioning](https://semver.org/) and
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), pre-1.0 (see semver §4: anything may
+change release to release). `CHANGELOG.md`'s `[Unreleased]` section accumulates entries as
+changes are made — this is unchanged (see "Keeping Documentation Current" below: every
+user-facing change gets a `### Added`/`### Fixed`/`### Changed` entry there as part of making the
+change, same as always).
+
+**What's new: don't hand-edit the version number.** Once a unit of work is complete (its
+CHANGELOG entries are written and `npm run verify` passes), run the matching release script to
+bump the version and close out the changelog section atomically:
+
+```bash
+npm run release:patch   # bug fixes, docs, internal-only changes — no new capability
+npm run release:minor   # new features, new dictionary/corrections capability, a rule-version
+                         # bump that changes existing output — pre-1.0, this covers breaking
+                         # changes too, per semver §4
+npm run release:major   # reserved for the deliberate 1.0.0 stability milestone — do not use
+                         # casually; ask the user first if a change seems to warrant it
+```
+
+Each script (`scripts/release.ts`) reads `CHANGELOG.md`'s `[Unreleased]` section, refuses to run
+if it's empty (nothing to release), then runs `npm version <type> --no-git-tag-version` (bumping
+`package.json` **and** `package-lock.json` together) and rewrites the changelog so those
+`[Unreleased]` entries become a new `## [x.y.z] - <date>` heading, leaving a fresh empty
+`[Unreleased]` above it. This keeps the three files — version number, lockfile, changelog — from
+ever drifting out of sync, which is what had happened before this was added (package.json had
+been bumped to 0.2.0 with no matching changelog section; several rounds of work had piled up under
+`[Unreleased]` instead of being cut into their own releases).
+
+Run the release script yourself as part of finishing a task, without waiting to be asked — same
+trust level as running `npm test`. It only touches the working tree; it does **not** run `git
+commit`, `git tag`, or `git push` — those remain a separate, explicit step under the normal
+git-commit workflow (confirm with the user before pushing/tagging, same as any other commit).
 
 ## Architecture
 

@@ -6,6 +6,8 @@ semantic versioning strictly (pre-1.0).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-16
+
 ### Added
 
 - **`hasHeader` option on `BatchService.processCsvFile()`/`previewCsvFile()`** (default
