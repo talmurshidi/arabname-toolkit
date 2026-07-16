@@ -72,6 +72,40 @@ export interface BatchReport {
   processedAt: string;
 }
 
+/**
+ * A non-fatal issue found while previewing a batch file, surfaced to the
+ * user before they commit to processing the whole file.
+ */
+export interface BatchPreviewWarning {
+  code:
+    | 'empty-file'
+    | 'no-data-rows'
+    | 'column-out-of-range'
+    | 'column-not-found'
+    | 'single-column-detected';
+  message: string;
+}
+
+/**
+ * Cheap upfront look at a CSV/TSV file: header row (if any), a handful of
+ * sample data rows, the resolved column index, the total data-row count,
+ * and any validation warnings — all computed from a single parse of the
+ * whole file, before the user commits to processing it.
+ */
+export interface BatchPreview {
+  /** Header row, present only when `hasHeader` is true and the file isn't empty. */
+  headerRow: string[] | null;
+  /** First few data rows (post-header), for display before processing. */
+  sampleRows: string[][];
+  /** Resolved 0-based column index that processing will use. */
+  columnIndex: number;
+  /** Total number of data rows (post-header) in the whole file. */
+  totalDataRows: number;
+  /** Delimiter Papa Parse detected (or the caller-supplied one). */
+  delimiter: string;
+  warnings: BatchPreviewWarning[];
+}
+
 // ---------------------------------------------------------------------------
 // User dictionary
 // ---------------------------------------------------------------------------

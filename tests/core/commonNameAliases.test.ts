@@ -56,7 +56,10 @@ const ALIAS_PAIRS: Array<[bare: string, diacritized: string]> = [
   ['Tufayl', 'Ṭufayl'],
   ['ʿAbdullāh', 'ʿAbdallāh'],
   ['Fath', 'Fatḥ'],
-  ['Hāmed', 'Ḥāmid']
+  ['Hāmed', 'Ḥāmid'],
+  ['Ismāʾil', 'Ismāʿīl'],
+  ['Jaʾfar', 'Jaʿfar'],
+  ['Yaʾqūb', 'Yaʿqūb']
 ];
 
 describe('bare-ASCII common-name dictionary aliases', () => {
@@ -99,6 +102,32 @@ describe('bare-ASCII common-name dictionary aliases', () => {
     expect(result.arabicHarakat).toContain(TRANSLITERATION_DICTIONARY['Muḥammad']);
     expect(result.arabicHarakat).toContain(TRANSLITERATION_DICTIONARY['Ṭufayl']);
     expect(result.arabicHarakat).not.toMatch(/[a-zA-Z]/);
+  });
+});
+
+/**
+ * A distinct ʿayn/hamza ambiguity from the curly-quote fix: real sources
+ * typeset a word-medial apostrophe as a right curly quote (’) purely by
+ * *position in the word* (ordinary "smart quote" auto-correction — start of
+ * word gets the left/opening quote, elsewhere the right/closing quote),
+ * regardless of whether the intended Arabic letter is hamza or ʿayn. After
+ * the right curly quote normalises to ʾ (hamza), a genuinely-ʿayn word like
+ * "Ismāʿīl" (source-spelled "Ismā’il") looks like it has a hamza it doesn't.
+ */
+describe('word-medial curly-quote ʿayn/hamza aliases', () => {
+  it('"Ismāʾil" (curly-quote spelling) resolves to the correct ʿayn-spelled "Ismāʿīl"', () => {
+    expect(generateArabicHarakat('Ismāʾil')).toBe(generateArabicHarakat('Ismāʿīl'));
+  });
+
+  it('"Jaʾfar" and "Yaʾqūb" resolve to their correct ʿayn-spelled dictionary entries', () => {
+    expect(generateArabicHarakat('Jaʾfar')).toBe(generateArabicHarakat('Jaʿfar'));
+    expect(generateArabicHarakat('Yaʾqūb')).toBe(generateArabicHarakat('Yaʿqūb'));
+  });
+
+  it('"Maʾshar" resolves to the same engine-derived output as "Maʿshar" (no dictionary entry for either)', () => {
+    expect(TRANSLITERATION_DICTIONARY['Maʿshar']).toBeUndefined();
+    expect(generateArabicHarakat('Maʾshar')).toBe(generateArabicHarakat('Maʿshar'));
+    expect(generateArabicHarakat('Maʾshar')).toBe('مَعْشَر');
   });
 });
 

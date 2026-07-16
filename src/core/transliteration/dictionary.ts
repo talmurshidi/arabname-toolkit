@@ -176,6 +176,23 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   // length/pattern, not just macron placement; keep the two aliases
   // pointing at their own distinct correct values).
   Hāmed: 'حَامِد',
+  // "Ismāʾil", "Maʾshar", "Jaʾfar", "Yaʾqūb": a distinct ʿayn/hamza
+  // ambiguity from the curly-quote fix above. Real sources typeset a
+  // word-medial apostrophe as a right curly quote (’) purely by *position
+  // in the word* — ordinary "smart quote" auto-correction picks left/
+  // opening at the start of a word and right/closing elsewhere, regardless
+  // of whether the intended Arabic letter is hamza or ʿayn. Once
+  // fixBrillChar() normalises that right curly quote to ʾ (hamza), a
+  // genuinely-ʿayn word like "Ismāʿīl" (source-spelled "Ismā’il") ends up
+  // looking like it has a hamza it doesn't. Each value below is this
+  // dictionary's own correctly ʿayn-spelled entry's value (or, for
+  // "Maʾshar" — which has no existing dictionary entry for "Maʿshar" — the
+  // character-level engine's own output for "Maʿshar", verified via
+  // generateArabicHarakat(), not typed by hand).
+  Ismāʾil: 'إِسْمَاعِيْل',
+  Maʾshar: 'مَعْشَر',
+  Jaʾfar: 'جَعْفَر',
+  Yaʾqūb: 'يَعْقُوب',
   Ṣāliḥ: 'صَالِح',
   Marzūq: 'مَرْزُوق',
   Ṭāhir: 'طَاهِر',

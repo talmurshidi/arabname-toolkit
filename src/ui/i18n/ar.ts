@@ -85,7 +85,17 @@ export const ar: UIStrings = {
     summarySuccess: 'ناجح',
     summaryError: 'خطأ',
     summarySkipped: 'محذوف',
-    noFileError: 'الرجاء اختيار ملف أولاً.'
+    noFileError: 'الرجاء اختيار ملف أولاً.',
+    hasHeaderLabel: 'هذا الملف يحتوي على صف عناوين',
+    previewTitle: 'معاينة',
+    previewColumnLabel: 'العمود المستخدم',
+    previewRowCount: 'صفوف مكتشفة',
+    warningEmptyFile: 'هذا الملف لا يحتوي على أي صفوف.',
+    warningNoDataRows: 'هذا الملف يحتوي على صف العناوين فقط دون بيانات للمعالجة.',
+    warningColumnNotFound: 'لم يتم العثور على اسم العمود المحدد في صف العناوين.',
+    warningColumnOutOfRange: 'رقم العمود المحدد خارج نطاق هذا الملف.',
+    warningSingleColumn:
+      'تم اكتشاف عمود واحد فقط — تحقق من الفاصل إذا كان يجب أن يحتوي هذا الملف على أعمدة متعددة.'
   },
   dictionary: {
     title: 'قاموس المستخدم',

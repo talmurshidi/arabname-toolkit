@@ -6,8 +6,54 @@ semantic versioning strictly (pre-1.0).
 
 ## [Unreleased]
 
+### Added
+
+- **`hasHeader` option on `BatchService.processCsvFile()`/`previewCsvFile()`** (default
+  `true`, matching previous behavior for files that do have a header). A named `column`
+  combined with `hasHeader: false` is now a rejected error (no header row to match
+  against) rather than a silent, wrong-guess fallback.
+- **`previewCsvFile()`**: a cheap upfront look at a CSV/TSV file (header row, first 5 data
+  rows, resolved column index, total data-row count, and validation warnings) callable
+  before committing to processing the whole file.
+- **Batch page preview panel**: automatically previews the selected file (re-running
+  whenever the file, column, or "has header row" checkbox changes), shows a sample table
+  (kept LTR regardless of UI locale, since sample cells are un-converted Latin text), and
+  surfaces validation warnings. Blocking warnings (empty file, no data rows, column not
+  found/out of range) disable the "Start processing" button; the informational
+  single-column warning does not.
+- **`hasHeader` checkbox** on the Batch page, wired to the new `BatchOptions.hasHeader`.
+- **`tests/services/batchService.test.ts`**: first test coverage for `BatchService`,
+  including a regression test reproducing the exact pre-fix header bug for contrast.
+- **`docs/reference/batch-file-format.md`**: accepted file format reference with example
+  CSV/TSV content (headered, headerless, tab-separated), `hasHeader` semantics, the full
+  `previewCsvFile()` warning-code table, and the CSV export format.
+- **Four more dictionary aliases for a distinct ʿayn/hamza ambiguity**: `Ismāʾil`,
+  `Maʾshar`, `Jaʾfar`, `Yaʿqūb`'s hamza-spelled variant `Yaʾqūb`. Real sources typeset a
+  word-medial apostrophe as a right curly quote (’) purely by _position in the word_
+  (ordinary "smart quote" auto-correction — start-of-word gets the left/opening quote,
+  elsewhere gets the right/closing quote), regardless of whether hamza or ʿayn is
+  intended. After the curly-quote fix above normalises that right quote to ʾ (hamza), a
+  genuinely-ʿayn word like "Ismāʿīl" (source-spelled "Ismā'il") was rendered with an
+  incorrect hamza instead. Each alias points at the correct ʿayn-spelled value (this
+  dictionary's existing entry where one exists; the character-level engine's own output
+  for "Maʿshar", which has no dictionary entry). Rule version bumped to
+  `dictionary-v1-legacy-fallback-2.0.7`.
+
 ### Fixed
 
+- **`BatchService.processCsvFile()` always treated the first row as a header**, even when
+  the file had none, silently discarding the first data row (e.g. the first name) of any
+  headerless CSV/TSV file. See the new `hasHeader` option above.
+- **`onProgress(rowIndex, rowIndex)` made batch-progress UI jump to 100% after the first
+  row.** The callback now receives the true total data-row count as its second argument.
+  Internally, `processCsvFile()` now reads the whole file's text and parses it
+  synchronously (`Papa.parse(text, ...)`) instead of streaming the `File` object through
+  Papa Parse's own reader — this is what makes an accurate upfront total possible, and
+  also makes the module unit-testable in Node (Papa Parse's File-streaming path depends on
+  `FileReaderSync`, a worker-only API unavailable in a plain Node test environment, which
+  is part of why `BatchService` had no tests before). Responsiveness on large files is
+  preserved by yielding to the event loop every 50 rows instead of relying on Papa Parse's
+  streaming.
 - **Dictionary key `Nasr` mapped to the wrong word for personal names.** It previously
   resolved to `نَسْر` — a distinct word, the pre-Islamic idol name from the root ن-س-ر
   mentioned at Q71:23 — but bare "Nasr" in a personal name overwhelmingly means `Naṣr`

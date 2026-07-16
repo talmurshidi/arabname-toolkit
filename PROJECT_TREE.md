@@ -79,6 +79,7 @@ tests/
 │   ├── transliteration.test.ts
 │   └── transliterationCorrections.test.ts
 └── services/
+    ├── batchService.test.ts
     ├── dictionaryService.test.ts
     ├── historyService.test.ts
     └── transliterationService.test.ts
@@ -101,6 +102,7 @@ docs/
 │   ├── manuscript-scholarly-system.md
 │   └── stitch-brief.md
 ├── reference/
+│   ├── batch-file-format.md
 │   └── degraded-transliteration-candidates.md
 ├── ARCHITECTURE.md
 └── METHODOLOGY.md
@@ -264,6 +266,7 @@ Word-position-aware orthographic normalisations, applied to Brill Latin input _b
 
 - `interface BatchOptions`
 - `function exportReportToCsv(report: BatchReport): string` — Export a BatchReport to CSV string with columns: row, input, arabic_harakat, arabic, name_order, status, error
+- `function previewCsvFile(file: File, options?: Pick<BatchOptions, 'column' | 'delimiter' | 'hasHeader'>): Promise<BatchPreview>` — Cheap upfront look at a CSV/TSV file, meant to be called as soon as the user selects a file (and again if they change the column/hasHeader options), so the UI can show a preview and surface validation problems _before_ the user commits to processing the whole file.
 - `function processCsvFile(file: File, options?: BatchOptions): Promise<BatchReport>` — Process a CSV/TSV File object and return a BatchReport.
 
 ### `src/services/DictionaryService.ts`
@@ -303,6 +306,8 @@ Word-position-aware orthographic normalisations, applied to Brill Latin input _b
 
 Types shared across all layers (core, services, ui).
 
+- `interface BatchPreview` — Cheap upfront look at a CSV/TSV file: header row (if any), a handful of sample data rows, the resolved column index, the total data-row count, and any validation warnings — all computed from a single parse of the whole file, before the user commits to processing it.
+- `interface BatchPreviewWarning` — A non-fatal issue found while previewing a batch file, surfaced to the user before they commit to processing the whole file.
 - `interface BatchReport`
 - `interface BatchRow`
 - `type BatchRowResult`
@@ -453,6 +458,10 @@ Full bilingual string contract.
 (no exports)
 
 ### `tests/core/transliterationCorrections.test.ts`
+
+(no exports)
+
+### `tests/services/batchService.test.ts`
 
 (no exports)
 

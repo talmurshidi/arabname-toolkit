@@ -56,7 +56,7 @@ export { dinToBrill, brillToDin, containsDin31635Chars } from './din31635.js';
  * Bumped whenever the rules change in a way that would alter output for
  * any existing input. Used for documentation and audit trail purposes.
  */
-export const TRANSLITERATION_RULE_VERSION = 'dictionary-v1-legacy-fallback-2.0.6';
+export const TRANSLITERATION_RULE_VERSION = 'dictionary-v1-legacy-fallback-2.0.7';
 
 export interface TransliterationOptions {
   bracketFix?: Partial<BracketFixOptions>;

@@ -86,7 +86,17 @@ export const en: UIStrings = {
     summarySuccess: 'Success',
     summaryError: 'Errors',
     summarySkipped: 'Skipped',
-    noFileError: 'Please select a file first.'
+    noFileError: 'Please select a file first.',
+    hasHeaderLabel: 'This file has a header row',
+    previewTitle: 'Preview',
+    previewColumnLabel: 'Column used',
+    previewRowCount: 'rows detected',
+    warningEmptyFile: 'This file has no rows.',
+    warningNoDataRows: 'This file only has a header row and no data to process.',
+    warningColumnNotFound: 'The selected column name was not found in the header row.',
+    warningColumnOutOfRange: 'The selected column index is out of range for this file.',
+    warningSingleColumn:
+      'Only one column was detected — check the delimiter if this file should have multiple columns.'
   },
   dictionary: {
     title: 'User dictionary',

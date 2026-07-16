@@ -82,6 +82,15 @@ export interface UIStrings {
     summaryError: string;
     summarySkipped: string;
     noFileError: string;
+    hasHeaderLabel: string;
+    previewTitle: string;
+    previewColumnLabel: string;
+    previewRowCount: string;
+    warningEmptyFile: string;
+    warningNoDataRows: string;
+    warningColumnNotFound: string;
+    warningColumnOutOfRange: string;
+    warningSingleColumn: string;
   };
   dictionary: {
     title: string;
