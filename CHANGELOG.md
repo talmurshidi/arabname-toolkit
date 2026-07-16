@@ -6,6 +6,58 @@ semantic versioning strictly (pre-1.0).
 
 ## [Unreleased]
 
+### Fixed
+
+- **Dictionary key `Nasr` mapped to the wrong word for personal names.** It previously
+  resolved to `نَسْر` — a distinct word, the pre-Islamic idol name from the root ن-س-ر
+  mentioned at Q71:23 — but bare "Nasr" in a personal name overwhelmingly means `Naṣr`
+  (`نَصْر`, "victory" — e.g. "Abū Naṣr al-Fārābī", also present in the muslimheritage.com
+  fixture set). The value was changed to match the existing `Naṣr` entry (copied
+  byte-for-byte, not retyped). This is an **existing dictionary value changing**, not a
+  new alias — rule version bumped to `dictionary-v1-legacy-fallback-2.0.6` since it
+  changes output for any existing input using the bare key `Nasr`. No test previously
+  asserted the old idol-name value, so nothing needed updating for that reason; a new
+  regression test locks in the corrected mapping
+  (`tests/core/commonNameAliases.test.ts`).
+- **Curly quotes (‘ U+2018 / ’ U+2019) weren't normalised to ʿ/ʾ.** Real bibliographic
+  sources (e.g. the muslimheritage.com Latinized-scholar-names list) typeset ʿayn/hamza as
+  typographic curly quotes rather than the backtick/ASCII-apostrophe shortcuts
+  `fixBrillChar()` already accepted. Previously this could leak raw, un-transliterated
+  Latin characters into Arabic output (e.g. `Ismā‘il` → `إِسْمَاعِil`) or produce the wrong
+  consonant (`‘Abdullāh` starting with أ instead of ع). The same left curly quote is also
+  historically used for the _elided_ definite article ("Abū ‘l-Qāsim" = "Abū al-Qāsim");
+  `fixBrillChar()` now disambiguates that case before applying the ʿayn mapping, and
+  `applyElidedArticleRule()` recognises the curly-quote spelling of the elision directly
+  too.
+- **Alif wasla (ٱ, U+0671) broke reverse (Arabic → Latin) conversion.** ٱ is the standard
+  Qur'anic/Classical spelling of the hamzat al-waṣl (e.g. `ٱللَّٰهُ` in the Basmala), and
+  plays the same structural role as plain alif (ا) for this engine's purposes, but was a
+  different, unrecognised codepoint. `looksFullyDiacritized()` now treats the two as
+  equivalent, so correctly-voweled text using ٱ is no longer wrongly rejected as "not
+  fully diacritised"; `convertWord()` now also converts it to `al-` like plain alif, and
+  `readVowel()` now merges a following dagger alif (ٰ, U+0670) into the preceding short
+  vowel instead of emitting a duplicated vowel (e.g. `laā` → `lā`).
+- **Assimilated Latin article spellings before a sun letter weren't recognised**
+  (`as-Sābī`, `ar-Raḥmān`, `ash-Shāfiʿī`, `adh-Dhahabī`, and the other ten sun-letter
+  prefixes, plus their elided-vowel variants without the leading "a"). Previously read as
+  two unrelated words (`as-Sābī` → "as" + "Sābī"); a new `applyAssimilatedArticleRule()`
+  (`orthographyNormalization.ts`) rewrites all of them to the canonical `al-` form before
+  dictionary matching, letting the existing `applySunLetterAssimilation()` regenerate the
+  correct Arabic shadda downstream — same approach as `applyElidedArticleRule()`.
+- **Added ~40 bare-ASCII dictionary aliases for extremely common given names**
+  (`Muhammad`, `Ahmad`/`Ahmed`, `Hasan`/`Hassan`, `Husayn`/`Hussein`/`Husain`, `Ibrahim`,
+  `Yahya`, `Uthman`/`Usman`/`Othman`, `Jafar`, `Zakariya`/`Zakariyya`, `Rashid`,
+  `Harun`/`Haroun`, `Ishaq`, `Umar`/`Omar`, `Yusuf`, `Musa`, `Sulayman`/`Suleiman`,
+  `Ismail`/`Ismael`, `Khalid`, `Marwan`, `Habib`, `Aziz`, `Hamid`, `Tahir`,
+  `Mahmud`/`Mahmoud`/`Mahmūd`, `Tufayl`, `ʿAbdullāh`, `Fath`, and `Hāmed`), each aliased to
+  the exact same Arabic value as this dictionary's existing, correctly diacritized entry —
+  no new Arabic was authored for this batch. Real bibliographic sources very often drop
+  macrons/underdots on exactly these names while keeping them on rarer ones (see
+  `docs/METHODOLOGY.md`, "Known limitations" #2). Rule version bumped to
+  `dictionary-v1-legacy-fallback-2.0.5` since these four fixes change output for existing
+  input containing curly quotes, alif wasla, assimilated article spellings, or these
+  specific bare names.
+
 ### Changed
 
 - **Retired `legacyEngine.mjs`; ported it to a typed, data-driven engine** under

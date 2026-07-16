@@ -114,7 +114,7 @@ Runs before layer 1, and only when the user selects "DIN 31635" as the input sch
 
 ### 0.5. Position-aware orthographic normalisation (`orthographyNormalization.ts`)
 
-Runs after standard normalisation, before dictionary matching (see ADR-008). Two rules:
+Runs after standard normalisation, before dictionary matching (see ADR-008). Three rules:
 
 - **`applyIbnAlifRule()`** — ابن ("ibn") keeps its alif only as the first word of a name
   ("Ibn Khaldūn"); between two names (the patronymic position — "Muḥammad ibn ʿAbdallāh") the alif
@@ -122,9 +122,21 @@ Runs after standard normalisation, before dictionary matching (see ADR-008). Two
   awareness, so this rule rewrites a non-initial "Ibn"/"ibn" to "bn" before dictionary matching —
   verified that "bn" alone already produces the correct بْن with no dictionary entry needed.
 - **`applyElidedArticleRule()`** — normalises Brill's elided-pronunciation article spelling
-  ("Abū l-Qāsim" / "Abū 'l-Qāsim") to the orthographic "al-" form, since Arabic script always
-  writes the article's alif regardless of connected-speech elision (unlike "ibn"'s alif, which is
-  a genuine writing-convention elision, not just pronunciation).
+  ("Abū l-Qāsim" / "Abū 'l-Qāsim", also written with a typographic curly quote, "Abū ‘l-Qāsim")
+  to the orthographic "al-" form, since Arabic script always writes the article's alif regardless
+  of connected-speech elision (unlike "ibn"'s alif, which is a genuine writing-convention elision,
+  not just pronunciation).
+- **`applyAssimilatedArticleRule()`** — normalises the _assimilated_-pronunciation spelling of the
+  article before a sun letter ("as-Sābī", "ar-Raḥmān", "ash-Shāfiʿī", "adh-Dhahabī", and the other
+  nine sun-letter prefixes, plus their elided-vowel variants without the leading "a" — "s-Sābī",
+  "'r-Raḥmān", etc.) back to the orthographic "al-" form, for the same reason as
+  `applyElidedArticleRule()`: Arabic script always writes "ال" regardless of how the following sun
+  letter is pronounced. Rewriting to canonical "al-" lets the existing forward-engine sun-letter
+  shadda logic (`brill/sunLetterAssimilation.ts`) regenerate the correct Arabic assimilation
+  automatically — this rule never touches Arabic output directly. Requires the hyphen immediately
+  after the consonant cluster, so an ordinary name that happens to start with the same letters
+  (e.g. "Ashraf") is left untouched. lām itself needs no separate assimilated spelling ("al-"
+  already reads as a doubled lām for that one letter).
 
 ### 1. Sourced corrections (`corrections.ts`)
 
@@ -162,17 +174,19 @@ A character-level inverse of the legacy engine's productive rules: consonant + s
 
 The reverse direction does not attempt to invert the legacy engine's irregular whole-word substitutions character-by-character (e.g. `ʿAbdallāh`, `Abū`) — those come back as their literal phonetic spelling rather than the historical orthographic convention. **One exception:** ابن/بن ("ibn") is looked up as a whole word and always reversed to `ibn` — Brill convention keeps the epenthetic vowel in the Latin spelling in both the name-initial (`ابْن`) and medial (`بْن`) Arabic spellings, even though only the initial position keeps the alif in Arabic script (see ADR-008 and `IRREGULAR_REVERSE_WORDS` in `arabicToLatin.ts`).
 
+ٱ (alif wasla, U+0671) — the standard Qur'anic/Classical spelling of the hamzat al-waṣl, e.g. at the start of the Basmala (`ٱللَّٰهِ`) — is treated identically to plain alif (ا) throughout this module: `looksFullyDiacritized()` exempts it the same way, and `convertWord()` converts it to `al-`/`ā` the same way. A dagger alif (ٰ, U+0670) immediately after a fatha is merged into a single long ā rather than emitted as a second vowel mark.
+
 `TransliterationService.convertReverse(text, preferredScheme?)` runs `brillToDin()` on the result to populate both Latin outputs, and accepts an optional preferred scheme (`'brill'` by default) that becomes the result's `scheme` field — the Converter's Brill/DIN 31635 selector works in both directions, not just Latin → Arabic.
 
 ## Known limitations
 
 1. **Arabic → Latin requires diacritics matching this project's forward-engine convention.** A word-final consonant may be left bare (pausal form) and the definite article's lām is never marked — both accepted, since that's what the forward engine itself produces (see "Reverse direction" above and ADR-008). Any _other_ undiacritised or partially-diacritised Arabic still lacks the information needed for unambiguous Brill output, so the reverse converter rejects it and warns rather than guessing.
 
-2. **Input without diacritics degrades gracefully but imprecisely.** "Abu Bakr" (without macron) goes through the legacy engine and produces a plausible but not authoritative Arabic form. The `corrections.ts` layer exists specifically to rescue high-frequency degraded strings.
+2. **Input without diacritics degrades gracefully but imprecisely.** "Abu Bakr" (without macron) goes through the legacy engine and produces a plausible but not authoritative Arabic form. The `corrections.ts` layer exists specifically to rescue high-frequency degraded strings. A curated set of bare-ASCII aliases for the most common given names (`Muhammad`, `Ahmad`, `Hasan`, `Ibrahim`, and others — see `dictionary.ts` and `CHANGELOG.md`) narrows this for those specific high-frequency cases by aliasing to the dictionary's existing correctly-diacritized entry, but this is not a general solution: any name not in that curated list still degrades as described here.
 
 3. **Non-standard name forms.** Personal names sometimes appear in sources with non-Brill, non-DIN romanisation (IJMES, ALA-LC/LOC, or simplified media spellings). The engine supports Brill and DIN 31635 input natively; IJMES and ALA-LC require manual pre-normalisation (see the comparison table above).
 
-4. **`ʿ` vs backtick vs ASCII apostrophe.** The `fixBrillChar()` function in the legacy engine normalises backtick (`` ` ``) to `ʿ` and ASCII apostrophe (`'`) to `ʾ`, so these common typing shortcuts are accepted. The correct Unicode characters (U+02BF, U+02BE) are always used in output.
+4. **`ʿ` vs backtick vs ASCII apostrophe vs curly quotes.** The `fixBrillChar()` function normalises backtick (`` ` ``) to `ʿ`, ASCII apostrophe (`'`) to `ʾ`, and the typographic curly quotes — ‘ (U+2018) to `ʿ` / ’ (U+2019) to `ʾ` — the latter pair because real bibliographic sources (Brill/EI-style Latinised name lists) typeset ʿayn/hamza that way. The left curly quote is disambiguated from its other historical use as the elided-article marker ("Abū ‘l-Qāsim") before the ʿayn mapping is applied. The correct Unicode characters (U+02BF, U+02BE) are always used in output.
 
 5. **`brillToDin()`'s tāʾ marbūṭa detection is convention-specific, not a general parser.** It renders any word-final bare "a" (not preceded by a hyphen and not the macron ā) as DIN's ẗ, which is correct under this project's own Brill convention (see the character table) but would be wrong if applied to arbitrary free-form Latin text using a different convention. It is only ever applied to text this engine itself produced or accepted as input, so this is a scoping note rather than a bug.
 

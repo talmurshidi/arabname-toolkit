@@ -66,11 +66,15 @@ src/
 └── main.tsx
 tests/
 ├── core/
+│   ├── alifWasla.test.ts
 │   ├── arabicHouseStyle.test.ts
 │   ├── arabicToLatin.test.ts
 │   ├── bracketSanitizer.test.ts
 │   ├── brillEngineParity.test.ts
+│   ├── commonNameAliases.test.ts
+│   ├── curlyQuoteNormalization.test.ts
 │   ├── din31635.test.ts
+│   ├── muslimHeritageFixtures.test.ts
 │   ├── orthographyNormalization.test.ts
 │   ├── transliteration.test.ts
 │   └── transliterationCorrections.test.ts
@@ -217,6 +221,7 @@ DIN 31635 ⇄ Brill conversion layer.
 
 ### `src/core/transliteration/index.ts`
 
+- `function applyAssimilatedArticleRule(text: string): string`
 - `function applyElidedArticleRule(text: string): string` — Brill sources sometimes spell the definite article, after a preceding vowel, in its elided pronunciation form — "l-" or "'l-" (the apostrophe standing in for the silent hamzat al-waṣl) — e.
 - `function applyIbnAlifRule(text: string): string` — Word-position-aware orthographic normalisations, applied to Brill Latin input _before_ dictionary matching and the Brill engine run.
 - `interface BracketFix`
@@ -251,6 +256,7 @@ DIN 31635 ⇄ Brill conversion layer.
 
 Word-position-aware orthographic normalisations, applied to Brill Latin input _before_ dictionary matching and the Brill engine run.
 
+- `function applyAssimilatedArticleRule(text: string): string`
 - `function applyElidedArticleRule(text: string): string` — Brill sources sometimes spell the definite article, after a preceding vowel, in its elided pronunciation form — "l-" or "'l-" (the apostrophe standing in for the silent hamzat al-waṣl) — e.
 - `function applyIbnAlifRule(text: string): string` — Word-position-aware orthographic normalisations, applied to Brill Latin input _before_ dictionary matching and the Brill engine run.
 
@@ -402,6 +408,10 @@ Full bilingual string contract.
 
 (no exports)
 
+### `tests/core/alifWasla.test.ts`
+
+(no exports)
+
 ### `tests/core/arabicHouseStyle.test.ts`
 
 (no exports)
@@ -418,7 +428,19 @@ Full bilingual string contract.
 
 (no exports)
 
+### `tests/core/commonNameAliases.test.ts`
+
+(no exports)
+
+### `tests/core/curlyQuoteNormalization.test.ts`
+
+(no exports)
+
 ### `tests/core/din31635.test.ts`
+
+(no exports)
+
+### `tests/core/muslimHeritageFixtures.test.ts`
 
 (no exports)
 

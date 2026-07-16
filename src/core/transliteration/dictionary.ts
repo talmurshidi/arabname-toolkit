@@ -112,6 +112,70 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   Zuhayr: 'زُهَيْر',
   Khalīl: 'خَلِيْل',
   Khalil: 'خَلِيْل',
+  // --- Bare-ASCII aliases for extremely common given names. Real
+  // bibliographic sources very often drop macrons/underdots on these
+  // specific high-frequency names while keeping them on rarer ones (see
+  // docs/METHODOLOGY.md, "Known limitations" #2). Each alias below points
+  // at the exact same Arabic value as this dictionary's own existing,
+  // correctly diacritized entry for that name — no new Arabic invented for
+  // this batch, same precedent as Khalīl/Khalil above.
+  Muhammad: 'مُحَمَّد',
+  Ahmad: 'أَحْمَد',
+  Ahmed: 'أَحْمَد',
+  Hasan: 'حَسَن',
+  Hassan: 'حَسَن',
+  Husayn: 'حُسَيْن',
+  Hussein: 'حُسَيْن',
+  Husain: 'حُسَيْن',
+  Ibrahim: 'إِبْرَاهِيْم',
+  Yahya: 'يَحْيَى',
+  Uthman: 'عُثْمَان',
+  Usman: 'عُثْمَان',
+  Othman: 'عُثْمَان',
+  Jafar: 'جَعْفَر',
+  Zakariya: 'زَكَرِيَّا',
+  Zakariyya: 'زَكَرِيَّا',
+  Rashid: 'رَشِيْد',
+  Harun: 'هَارُون',
+  Haroun: 'هَارُون',
+  Ishaq: 'إِسْحَاق',
+  Umar: 'عُمَر',
+  Omar: 'عُمَر',
+  Yusuf: 'يُوسُف',
+  Musa: 'مُوسَى',
+  Sulayman: 'سُلَيْمَان',
+  Suleiman: 'سُلَيْمَان',
+  Ismail: 'إِسْمَاعِيْل',
+  Ismael: 'إِسْمَاعِيْل',
+  Khalid: 'خَالِد',
+  Marwan: 'مَرْوَان',
+  Habib: 'حَبِيْب',
+  Aziz: 'عَزِيْز',
+  Hamid: 'حَمِيْد',
+  Tahir: 'طَاهِر',
+  Mahmud: 'مَحْمُود',
+  Mahmoud: 'مَحْمُود',
+  Mahmūd: 'مَحْمُود',
+  // "Ṭufayl" (as in the historical name "Ibn Ṭufayl") has no standalone
+  // dictionary entry — only the compound "al-Ṭufayl" above. Value verified
+  // via generateArabicHarakat('Ṭufayl') (Ṭ is a moon letter, so this is a
+  // plain character-level rendering, not a new invented spelling).
+  Ṭufayl: 'طُفَيْل',
+  Tufayl: 'طُفَيْل',
+  // "ʿAbdullāh" (u) is a spelling variant of the existing "ʿAbdallāh" (a)
+  // compound entry above, seen in real bibliographic sources.
+  ʿAbdullāh: 'عَبْدُ اللَّهِ',
+  // "Fath" bare-ASCII: without this alias, the fallback engine misreads the
+  // "th" substring as a single ث digraph, dropping the ت entirely (verified
+  // via generateArabicHarakat('Fath') producing "فَث" instead of "فَتْح").
+  Fath: 'فَتْح',
+  // "Hāmed" (kunya element, e.g. "Abū Hāmid al-Ghazālī" respelled with a
+  // colloquial terminal "e") is a spelling variant of the existing "Ḥāmid"
+  // entry below (a *different* word from "Ḥamīd"/"Hamid" above: "Ḥāmid" =
+  // "one who praises" vs "Ḥamīd" = "praiseworthy" — differ in vowel
+  // length/pattern, not just macron placement; keep the two aliases
+  // pointing at their own distinct correct values).
+  Hāmed: 'حَامِد',
   Ṣāliḥ: 'صَالِح',
   Marzūq: 'مَرْزُوق',
   Ṭāhir: 'طَاهِر',
@@ -712,7 +776,14 @@ export const TRANSLITERATION_DICTIONARY: Record<string, string> = {
   'Abū Muṭīʿ': 'أَبُو مُطِيْع',
   Hushaym: 'هُشَيْم',
   'Abū Bukayr': 'أَبُو بُكَيْر',
-  Nasr: 'نَسْر',
+  // Bare "Nasr" in a personal name overwhelmingly means "Naṣr" ("victory",
+  // نَصْر — e.g. "Abū Naṣr al-Fārābī") rather than the pre-Islamic idol name
+  // (نَسْر, from the root ن-س-ر, mentioned at Q71:23 among the idols of
+  // Nūh's people) that this key previously mapped to. Value copied
+  // byte-for-byte from the existing "Naṣr" entry above (not retyped) — see
+  // CHANGELOG.md for the reasoning and tests/core/commonNameAliases.test.ts
+  // for the regression test.
+  Nasr: 'نَصْر',
   'Abū Rabāḥ': 'أَبُو رَبَاح',
   Fulayḥ: 'فُلَيْح',
   'Abū Thābit': 'أَبُو ثَابِت',

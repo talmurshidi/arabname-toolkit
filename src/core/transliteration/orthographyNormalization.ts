@@ -51,8 +51,67 @@ export function applyIbnAlifRule(text: string): string {
  * so an elided "l-"/"'l-" spelling was previously left untransliterated.
  * This function normalises both spellings to "al-" before anything else
  * runs, so sun-letter assimilation and everything downstream behaves
- * exactly as it would for an explicitly-written "al-".
+ * exactly as it would for an explicitly-written "al-". Real bibliographic
+ * sources often typeset the elision apostrophe as a typographic curly
+ * quote (‘/’) rather than an ASCII one — both are accepted here too.
  */
 export function applyElidedArticleRule(text: string): string {
-  return text.replace(/(^|\s)['ʼʾ]?[Ll]-/g, '$1al-');
+  return text.replace(/(^|\s)['ʼʾ‘’]?[Ll]-/g, '$1al-');
+}
+
+/**
+ * Brill sources commonly spell the definite article, before a "sun letter"
+ * (ت ث د ذ ر ز س ش ص ض ط ظ ل ن), in its *assimilated pronunciation* form —
+ * the article's lām is pronounced as (and, in Latin transliteration,
+ * spelled as) the following consonant instead: "ar-Raḥmān", "as-Sābī",
+ * "ash-Shāfiʿī", "adh-Dhahabī", "az-Zahrāwī", "at-Ṭabarī", "an-Nawawī",
+ * etc. — one assimilated spelling per sun letter (lām itself needs no
+ * separate spelling: "al-" already reads as a doubled lām for that one).
+ * Each also has an elided-vowel variant with no leading "a" (an apostrophe
+ * standing in for the silent hamzat al-waṣl, exactly as
+ * `applyElidedArticleRule()` handles for "l-"/"'l-"): "r-", "'s-", etc.
+ *
+ * Arabic ORTHOGRAPHY always writes the article's alif+lām regardless of
+ * this pronunciation-driven Latin spelling variation (the assimilation is a
+ * spoken/Latin-transliteration convention, not a written one — the Arabic
+ * shadda that results is added automatically downstream by
+ * `applySunLetterAssimilation()`, once the canonical "al-" form reaches the
+ * engine). This project's engine only recognises the literal string "al-",
+ * so any of these assimilated spellings were previously read as two
+ * unrelated words (e.g. "as-Sābī" → "as" + "Sābī"). This function rewrites
+ * all of them back to "al-" before anything else runs, letting
+ * `applySunLetterAssimilation()` regenerate the correct Arabic assimilation
+ * from the canonical form exactly as it would for an explicitly-written
+ * "al-Sābī".
+ *
+ * The hyphen is required immediately after the consonant cluster, so a
+ * word that merely *starts* with one of these letter combinations by
+ * coincidence — e.g. "Ashraf" (starts "Ash", but has no hyphen there) — is
+ * left untouched.
+ */
+const SUN_LETTER_LATIN_CLUSTERS = [
+  'th',
+  'dh',
+  'sh',
+  't',
+  'd',
+  'r',
+  'z',
+  's',
+  'ṣ',
+  'ḍ',
+  'ṭ',
+  'ẓ',
+  'n'
+] as const;
+
+const SUN_LETTER_CLUSTER_PATTERN = SUN_LETTER_LATIN_CLUSTERS.join('|');
+
+const ASSIMILATED_ARTICLE_RE = new RegExp(
+  `(^|\\s)(?:a(?:${SUN_LETTER_CLUSTER_PATTERN})|['ʼʾ‘’]?(?:${SUN_LETTER_CLUSTER_PATTERN}))-`,
+  'gi'
+);
+
+export function applyAssimilatedArticleRule(text: string): string {
+  return text.replace(ASSIMILATED_ARTICLE_RE, '$1al-');
 }

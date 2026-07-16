@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   applyIbnAlifRule,
-  applyElidedArticleRule
+  applyElidedArticleRule,
+  applyAssimilatedArticleRule
 } from '../../src/core/transliteration/orthographyNormalization.js';
-import { generateArabicHarakat } from '../../src/core/transliteration/index.js';
+import {
+  generateArabicHarakat,
+  generateTransliteration
+} from '../../src/core/transliteration/index.js';
 
 describe('applyIbnAlifRule', () => {
   it('keeps the alif when "Ibn"/"ibn" is the first word', () => {
@@ -69,5 +73,52 @@ describe('applyElidedArticleRule', () => {
     expect(generateArabicHarakat("Abū 'l-Qāsim Ḫalaf al-Zahrāwī")).toBe(
       generateArabicHarakat('Abū al-Qāsim Ḫalaf al-Zahrāwī')
     );
+  });
+});
+
+describe('applyAssimilatedArticleRule', () => {
+  it('normalises assimilated sun-letter spellings to "al-"', () => {
+    expect(applyAssimilatedArticleRule('as-Sābī')).toBe('al-Sābī');
+    expect(applyAssimilatedArticleRule('ar-Raḥmān')).toBe('al-Raḥmān');
+    expect(applyAssimilatedArticleRule('ash-Shāfiʿī')).toBe('al-Shāfiʿī');
+    expect(applyAssimilatedArticleRule('adh-Dhahabī')).toBe('al-Dhahabī');
+    expect(applyAssimilatedArticleRule('at-Ṭabarī')).toBe('al-Ṭabarī');
+    expect(applyAssimilatedArticleRule('az-Zahrāwī')).toBe('al-Zahrāwī');
+    expect(applyAssimilatedArticleRule('an-Nawawī')).toBe('al-Nawawī');
+  });
+
+  it('normalises the elided (no leading "a") sun-letter spellings too', () => {
+    expect(applyAssimilatedArticleRule('r-Raḥmān')).toBe('al-Raḥmān');
+    expect(applyAssimilatedArticleRule("'s-Sābī")).toBe('al-Sābī');
+    expect(applyAssimilatedArticleRule('ʾsh-Shāfiʿī')).toBe('al-Shāfiʿī');
+  });
+
+  it('leaves an already-written "al-" (moon letter or otherwise) unaffected', () => {
+    expect(applyAssimilatedArticleRule('al-Zahrāwī')).toBe('al-Zahrāwī');
+    expect(applyAssimilatedArticleRule('Bakr al-Dīn')).toBe('Bakr al-Dīn');
+  });
+
+  it('does not rewrite a word that merely starts with a sun-letter cluster but has no hyphen there', () => {
+    // "Ashraf" starts with "Ash" (one of the assimilated clusters) but is
+    // an ordinary given name, not the assimilated article -- the required
+    // hyphen immediately after the cluster is what disambiguates the two.
+    expect(applyAssimilatedArticleRule('Ashraf Ibn Muḥammad')).toBe('Ashraf Ibn Muḥammad');
+    expect(applyAssimilatedArticleRule('Anas Ibn Mālik')).toBe('Anas Ibn Mālik');
+  });
+
+  it('produces the correct Arabic end-to-end, matching the equivalent written-out "al-" form', () => {
+    expect(generateArabicHarakat('as-Sābī')).toBe(generateArabicHarakat('al-Sābī'));
+    expect(generateArabicHarakat('ar-Raḥmān')).toBe(generateArabicHarakat('al-Raḥmān'));
+    expect(generateArabicHarakat('ash-Shāfiʿī')).toBe(generateArabicHarakat('al-Shāfiʿī'));
+  });
+
+  it('resolves the reported "as-Sābī" case to a single assimilated word, not two words', () => {
+    const result = generateTransliteration(
+      'Al-Battānī, Abū ʿAbdullāh Muhammad Ibn Jābir Ibn Sinān al-Harrānī as-Sābī'
+    );
+    // Compared against the dynamically-generated equivalent rather than a
+    // hand-typed literal -- shadda/vowel-mark combining-order is easy to
+    // get subtly wrong by eye (see CLAUDE.md's testing rule).
+    expect(result.arabicHarakat).toContain(generateArabicHarakat('al-Sābī'));
   });
 });

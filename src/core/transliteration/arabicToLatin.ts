@@ -106,11 +106,17 @@ const HAMZA_SEATS = new Set(['ء', 'أ', 'إ', 'ؤ', 'ئ']);
  */
 export function looksFullyDiacritized(arabicText: string): boolean {
   const chars = Array.from(arabicText.trim());
-  const exempt = new Set(['ا', 'ى', 'ة', ' ', ...HAMZA_SEATS]);
+  // ٱ (U+0671, alif wasla) is standard orthography for the hamzat al-waṣl —
+  // e.g. the Qur'anic/Classical spelling of the definite article at the
+  // start of "ٱللَّٰهُ" (Allāh) or "ٱلرَّحْمَٰنُ" (al-Raḥmān). It plays exactly the
+  // same structural role as plain alif (ا) here: it never carries its own
+  // harakat, and it signals the following lām is the (silent) article lām.
+  const exempt = new Set(['ا', 'ٱ', 'ى', 'ة', ' ', ...HAMZA_SEATS]);
   let sawLetter = false;
   for (let i = 0; i < chars.length; i++) {
     const ch = chars[i] as string;
-    if (!(ch in CONSONANTS) && !HAMZA_SEATS.has(ch) && ch !== 'ا' && ch !== 'ى') continue;
+    if (!(ch in CONSONANTS) && !HAMZA_SEATS.has(ch) && ch !== 'ا' && ch !== 'ٱ' && ch !== 'ى')
+      continue;
     sawLetter = true;
     if (exempt.has(ch)) continue;
     // و/ي acting as mater lectionis (long ū/ī) carry no mark of their own —
@@ -131,7 +137,7 @@ export function looksFullyDiacritized(arabicText: string): boolean {
     // absolute index 1, so this also works for the 2nd/3rd/... word of a
     // multi-word name, not only the first).
     const prevIsWordInitialAlif =
-      i > 0 && chars[i - 1] === 'ا' && (i === 1 || chars[i - 2] === ' ');
+      i > 0 && (chars[i - 1] === 'ا' || chars[i - 1] === 'ٱ') && (i === 1 || chars[i - 2] === ' ');
     const isArticleLam = ch === 'ل' && prevIsWordInitialAlif;
     if (isArticleLam) continue;
     // No harakat follows — acceptable only at a word boundary (pausal form).
@@ -197,7 +203,12 @@ function readVowel(chars: string[], i: number): VowelRead {
     idx++;
   }
 
-  if (base === 'a' && chars[idx] === 'ا') {
+  if (base === 'a' && (chars[idx] === 'ا' || chars[idx] === DAGGER_ALIF)) {
+    // Dagger alif (ٰ, U+0670) is the diacritic form of mater-lectionis long
+    // ā — used e.g. in "ٱللَّٰهُ" (Allāh) and "ٱلرَّحْمَٰنُ" (al-Raḥmān) where a
+    // full alif letter isn't written. Without this, it's left for the
+    // per-character loop's standalone DAGGER_ALIF case to also emit "ā",
+    // duplicating the vowel (e.g. "laā" instead of "lā").
     base = 'ā';
     idx++;
   } else if (base === 'a' && chars[idx] === 'ة') {
@@ -234,8 +245,9 @@ function convertWord(word: string): string {
   // geminated root consonant would (see docs/METHODOLOGY.md).
   let suppressNextDoubling = false;
 
-  // Definite article "ال" -> "al-"
-  if (chars[0] === 'ا' && chars[1] === 'ل' && chars.length > 2) {
+  // Definite article "ال" -> "al-" (also "ٱل", spelled with alif wasla —
+  // see looksFullyDiacritized() above for why the two are equivalent here).
+  if ((chars[0] === 'ا' || chars[0] === 'ٱ') && chars[1] === 'ل' && chars.length > 2) {
     out += 'al-';
     i = 2;
     // Moon letters carry an explicit sukūn on the lām; sun letters instead
@@ -270,7 +282,7 @@ function convertWord(word: string): string {
       continue;
     }
 
-    if (ch === 'ا') {
+    if (ch === 'ا' || ch === 'ٱ') {
       out += 'ā';
       i++;
       continue;

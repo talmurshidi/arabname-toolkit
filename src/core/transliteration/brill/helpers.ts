@@ -19,6 +19,16 @@ export function fixBrillChar(txt: string): string {
     txt = txt.replaceAll('û', 'ū');
     txt = txt.replaceAll('Û', 'Ū');
     txt = txt.replaceAll('`', 'ʿ');
+    // Typographic curly quotes are what real bibliographic sources (e.g.
+    // Brill/EI-style Latinised name lists) actually typeset for ʿayn/hamza —
+    // but the same left curly quote is also used, before "l-"/"L-", as the
+    // elided-article marker ("Abū 'l-Qāsim"; see applyElidedArticleRule(),
+    // which already accepts the ASCII apostrophe spelling of that elision).
+    // Normalise the elision case to a plain apostrophe first so it flows
+    // into that existing rule instead of being misread as ʿayn.
+    txt = txt.replace(/[‘’](?=[lL]-)/g, "'");
+    txt = txt.replaceAll('‘', 'ʿ');
+    txt = txt.replaceAll('’', 'ʾ');
     txt = txt.replaceAll('A^', 'Ā');
     txt = txt.replaceAll('a^', 'ā');
     txt = txt.replaceAll('â', 'ā');

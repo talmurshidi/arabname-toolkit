@@ -31,11 +31,19 @@ import { dictionaryTransliterate, reassembleDictionaryTokens } from './dictionar
 import { applyYaSukunHouseStyle } from './arabicHouseStyle.js';
 import { TRANSLITERATION_CORRECTIONS } from './corrections.js';
 import { generateLatinFromArabic } from './arabicToLatin.js';
-import { applyIbnAlifRule, applyElidedArticleRule } from './orthographyNormalization.js';
+import {
+  applyIbnAlifRule,
+  applyElidedArticleRule,
+  applyAssimilatedArticleRule
+} from './orthographyNormalization.js';
 
 export { looksFullyDiacritized } from './arabicToLatin.js';
 
-export { applyIbnAlifRule, applyElidedArticleRule } from './orthographyNormalization.js';
+export {
+  applyIbnAlifRule,
+  applyElidedArticleRule,
+  applyAssimilatedArticleRule
+} from './orthographyNormalization.js';
 
 export { sanitizeBrackets, DEFAULT_BRACKET_FIX_OPTIONS } from './bracketSanitizer.js';
 export type { BracketFix, BracketFixOptions } from './bracketSanitizer.js';
@@ -48,7 +56,7 @@ export { dinToBrill, brillToDin, containsDin31635Chars } from './din31635.js';
  * Bumped whenever the rules change in a way that would alter output for
  * any existing input. Used for documentation and audit trail purposes.
  */
-export const TRANSLITERATION_RULE_VERSION = 'dictionary-v1-legacy-fallback-2.0.4';
+export const TRANSLITERATION_RULE_VERSION = 'dictionary-v1-legacy-fallback-2.0.6';
 
 export interface TransliterationOptions {
   bracketFix?: Partial<BracketFixOptions>;
@@ -108,7 +116,9 @@ export function generateArabicHarakat(value: string, options?: TransliterationOp
   if (correction !== undefined) return correction;
 
   const normalized = normalizeTransliteratedName(value, options);
-  const withOrthographyFixes = applyIbnAlifRule(applyElidedArticleRule(normalized));
+  const withOrthographyFixes = applyIbnAlifRule(
+    applyAssimilatedArticleRule(applyElidedArticleRule(normalized))
+  );
   const matchResult = dictionaryTransliterate(withOrthographyFixes);
   return reassembleDictionaryTokens(matchResult, fallbackWord).trim();
 }

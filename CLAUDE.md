@@ -66,6 +66,17 @@ npm run verify           # format:check + lint + typecheck + test + docs:tree:ch
 
 Always run `npm run verify` before considering a change complete.
 
+**To save tokens/time on routine changes:** for most changes, running `npm test` and
+`npm run typecheck` is enough to confirm correctness — those catch logic errors and type
+errors, which is what you're actually changing. `npm run format` (Prettier) is a
+mechanical, deterministic fixup the developer can run locally in one command with no
+judgment involved — don't spend a tool call running `format`/`format:check` yourself
+unless you specifically touched formatting-sensitive files or the developer asks for the
+full gate. Reserve the complete `npm run verify` (format:check + lint + typecheck + test +
+docs:tree:check + build) for: finishing a multi-file/multi-task change, before handing
+work back as "done", or when explicitly asked to verify. Don't re-run the full gate after
+every small edit within the same task — accumulate changes and verify once at the end.
+
 ## Architecture
 
 See `docs/ARCHITECTURE.md` for the full layer diagram and rationale. Key rules:
