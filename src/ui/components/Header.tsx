@@ -21,9 +21,11 @@ export function Header({ view, setView, strings, onToggleLocale }: HeaderProps) 
     <header className="bg-parchment border-b border-gray-200 w-full sticky top-0 z-50 shadow-sm">
       <nav className="flex justify-between items-center w-full px-4 sm:px-6 py-4 max-w-5xl mx-auto">
         <button onClick={() => setView('converter')} className="flex items-center gap-2 group">
-          <span className="font-serif text-xl font-bold tracking-tight transition-colors group-hover:text-scholargreen">
-            {strings.app.name}
-          </span>
+          <img
+            src={`${import.meta.env.BASE_URL}logo.png`}
+            alt={strings.app.name}
+            className="w-16 h-16"
+          />
           <span className="hidden sm:inline text-xs text-gray-500">{strings.app.tagline}</span>
         </button>
 

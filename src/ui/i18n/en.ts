@@ -8,6 +8,8 @@ export const en: UIStrings = {
       'A free, open-source tool that runs entirely in your browser — no server, no database.',
     footerMethodology: 'Methodology',
     footerPrivacy: 'Privacy',
+    footerRights: 'All rights reserved.',
+    footerVersion: 'Version',
     privacyNotice: 'All data stays in your browser (localStorage) and is never sent to a server.',
     sourceCode: 'Source code'
   },

@@ -7,6 +7,8 @@ export const ar: UIStrings = {
     footerDesc: 'أداة مجانية ومفتوحة المصدر تعمل بالكامل في المتصفح، دون خادم أو قاعدة بيانات.',
     footerMethodology: 'المنهجية',
     footerPrivacy: 'الخصوصية',
+    footerRights: 'جميع الحقوق محفوظة.',
+    footerVersion: 'الإصدار',
     privacyNotice: 'كل البيانات تبقى في متصفحك (localStorage) ولا تُرسَل إلى أي خادم.',
     sourceCode: 'الشيفرة المصدرية'
   },

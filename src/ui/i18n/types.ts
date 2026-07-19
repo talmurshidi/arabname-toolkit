@@ -6,6 +6,8 @@ export interface UIStrings {
     footerDesc: string;
     footerMethodology: string;
     footerPrivacy: string;
+    footerRights: string;
+    footerVersion: string;
     privacyNotice: string;
     sourceCode: string;
   };

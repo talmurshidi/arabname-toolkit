@@ -433,14 +433,16 @@ export function ConverterPage({ strings: s }: Props) {
                   </div>
                   <p
                     className={`text-sm text-gray-500 truncate ${entry.direction === 'arabic-to-latin' ? 'arabic-text' : ''}`}
-                    dir={entry.direction === 'arabic-to-latin' ? 'rtl' : undefined}
+                    dir={entry.direction === 'arabic-to-latin' ? 'rtl' : 'ltr'}
                   >
                     {entry.input}
                   </p>
                   {entry.direction === 'latin-to-arabic' ? (
-                    <p className="arabic-text text-lg truncate">{entry.arabicHarakat}</p>
+                    <p className="arabic-text text-lg truncate" dir="rtl">
+                      {entry.arabicHarakat}
+                    </p>
                   ) : (
-                    <p className="text-lg font-serif truncate">
+                    <p className="text-lg font-serif truncate" dir="ltr">
                       {entry.scheme === 'din31635' ? entry.dinLatin : entry.brillLatin}
                     </p>
                   )}
