@@ -54,8 +54,14 @@ entries" and "Adding sourced corrections" sections of `CLAUDE.md`. In short:
 
 ## Reporting bugs
 
-Open an issue with: the exact input string, the output you got, the output you expected, and —
-if this is a transliteration accuracy issue — a citable source for the expected form.
+[Open a new issue](https://github.com/talmurshidi/arabname-toolkit/issues/new/choose) and pick
+the template that fits:
+
+- **Transliteration accuracy** — an incorrect Arabic conversion for a specific input. Requires
+  the exact input string, the output you got, the output you expected, and a citable source for
+  the expected form.
+- **Bug report** — anything else that's broken.
+- **Feature request** — a new capability proposal.
 
 ## Code of conduct
 

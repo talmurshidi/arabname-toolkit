@@ -6,6 +6,23 @@ semantic versioning strictly (pre-1.0).
 
 ## [Unreleased]
 
+### Added
+
+- **App logo.** A new logo (favicon, PWA icons, header mark, and footer mark) replaces the
+  text-only wordmark in the header. Source concept images are kept in `docs/design/logo/` for
+  reference.
+- **Footer now shows copyright and app version** (year, "All rights reserved", and the
+  `package.json` version, injected at build time via a new `__APP_VERSION__` constant).
+
+### Fixed
+
+- **History entries no longer garble when toggling between Arabic and English UI.** Two lines
+  in the Converter's history list (the Arabic result for Latin→Arabic entries, and the input
+  text itself) didn't set an explicit `dir` attribute, so they inherited text direction from
+  the page's current UI locale instead of from their own script — switching the UI language
+  flipped the base direction of unrelated Arabic/Latin content in the list, breaking
+  word order and truncation side.
+
 ## [0.2.1] - 2026-07-16
 
 ### Fixed

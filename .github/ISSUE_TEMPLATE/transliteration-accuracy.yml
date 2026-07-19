@@ -1,0 +1,87 @@
+name: Transliteration accuracy
+description: Report an incorrect Arabic conversion for a specific input string.
+title: '[Transliteration] '
+labels:
+  - transliteration
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing, check `docs/reference/degraded-transliteration-candidates.md` and the
+        existing `corrections.ts`/`dictionary.ts` entries — this input may already be a known,
+        unverified case.
+
+        **Do not guess the expected form.** Per `CONTRIBUTING.md`, corrections are only accepted
+        when backed by a citable source (a specific edition, page, or authoritative reference
+        work) — see the "Citable source" field below.
+
+  - type: input
+    id: input-string
+    attributes:
+      label: Input string
+      description: The exact string you typed, copy-pasted exactly (don't retype it by hand).
+      placeholder: e.g. Abū Bakr al-Ṣiddīq
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scheme
+    attributes:
+      label: Transliteration scheme
+      options:
+        - Brill
+        - DIN 31635
+    validations:
+      required: true
+
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Conversion direction
+      options:
+        - Latin → Arabic
+        - Arabic → Latin
+    validations:
+      required: true
+
+  - type: input
+    id: actual-output
+    attributes:
+      label: Output you got
+      description: The exact output the converter produced, copy-pasted exactly.
+      placeholder: e.g. أَبُو بَكْر الصِدِّيق
+    validations:
+      required: true
+
+  - type: input
+    id: expected-output
+    attributes:
+      label: Output you expected
+      description: The correct Arabic form.
+      placeholder: e.g. أَبُو بَكْر الصِّدِّيق
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Citable source
+      description: >-
+        A specific edition, page, or authoritative reference work verifying the expected form.
+        Issues without one will be redirected to
+        docs/reference/degraded-transliteration-candidates.md instead of being fixed directly.
+      placeholder: e.g. Encyclopaedia of Islam, THREE, s.v. "al-Ṣiddīq".
+    validations:
+      required: true
+
+  - type: input
+    id: rule-version
+    attributes:
+      label: Rule version
+      description: >-
+        Shown at the bottom of the in-app Methodology page. Optional, but helps confirm whether
+        this is already fixed in a newer release.
+      placeholder: e.g. dictionary-v1-legacy-fallback-2.0.7
+    validations:
+      required: false

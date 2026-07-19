@@ -63,7 +63,8 @@ src/
 │       └── MethodologyPage.tsx
 ├── App.tsx
 ├── index.css
-└── main.tsx
+├── main.tsx
+└── vite-env.d.ts
 tests/
 ├── core/
 │   ├── alifWasla.test.ts
@@ -101,6 +102,10 @@ docs/
 │   ├── 0009-reverse-scheme-and-history.md
 │   └── 0010-retire-legacy-engine.md
 ├── design/
+│   ├── logo/
+│   │   ├── logo-concept-a.png
+│   │   ├── logo-concept-b.png
+│   │   └── logo-icon-final.png
 │   ├── manuscript-scholarly-system.md
 │   └── stitch-brief.md
 ├── reference/
@@ -109,6 +114,8 @@ docs/
 ├── ARCHITECTURE.md
 └── METHODOLOGY.md
 public/
+├── favicon.png
+├── logo.png
 └── manifest.json
 ```
 
@@ -412,6 +419,10 @@ Full bilingual string contract.
 - `type View`
 
 ### `src/main.tsx`
+
+(no exports)
+
+### `src/vite-env.d.ts`
 
 (no exports)
 

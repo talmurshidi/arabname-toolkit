@@ -1,0 +1,47 @@
+name: Feature request
+description: Suggest a new feature or enhancement.
+title: '[Feature] '
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that the toolkit doesn't currently support?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope-check
+    attributes:
+      label: Scope check
+      description: >-
+        This project is deliberately a backend-free, client-side-only tool: no server, no
+        database, no router, no global state library, no second styling system (see CLAUDE.md's
+        "Never do this" list). Proposals that need one of these should explain why in the
+        description above — they'll need a new ADR to be accepted.
+      options:
+        - label: This feature doesn't require a backend, database, or server component.
+          required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+    validations:
+      required: false
